@@ -1,0 +1,33 @@
+﻿<Window x:Class="WPFAudioplayer.EnterName"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFAudioplayer"
+        mc:Ignorable="d"
+        Title="MUZABYTE" Height="200" Width="400" Background="#FF101010" ResizeMode="NoResize" WindowStyle="None" MouseDown="EnterName_MouseDown" WindowStartupLocation="CenterOwner">
+    <Border BorderBrush="#FF00DDFF" BorderThickness="1">
+        <Canvas>
+            <Label HorizontalAlignment="Left" Canvas.Left="145" FontSize="20" Foreground="#FF00DDFF" FontFamily="Arial Narrow" FontWeight="Bold" Canvas.Top="30">
+                Playlist Name
+            </Label>
+            <TextBox x:Name="playlistnameTextBox" Width="356" Canvas.Left="22" Canvas.Top="91" FontSize="15" Foreground="#FF00DDFF" Background="Black" HorizontalAlignment="Left" VerticalAlignment="Center"></TextBox>
+            <Button 
+                x:Name="playlistnameokButton" 
+                Width="96" 
+                Height="28" 
+                Content="OK" 
+                FontSize="15" 
+                Foreground="#FF00DDFF" 
+                Background="Black"
+                HorizontalAlignment="Center" 
+                Click="playlistnameokButton_Click" 
+                Canvas.Left="152" 
+                Canvas.Top="151" 
+                VerticalAlignment="Top"
+                BorderBrush="#FF00DDFF"
+                BorderThickness="1">
+            </Button>
+        </Canvas>
+    </Border>
+</Window>

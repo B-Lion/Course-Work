@@ -1,0 +1,96 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="images\**" />
+    <EmbeddedResource Remove="images\**" />
+    <None Remove="images\**" />
+    <Page Remove="images\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="clearplaylistButton_idle.png" />
+    <None Remove="closeButton_hover.png" />
+    <None Remove="closeButton_idle.png" />
+    <None Remove="emptyCover.png" />
+    <None Remove="loadplaylistButton_idle.png" />
+    <None Remove="loopButton_hover.png" />
+    <None Remove="loopButton_idle.png" />
+    <None Remove="loopoffButton_hover.png" />
+    <None Remove="loopoffButton_idle.png" />
+    <None Remove="minimizeButton_hover.png" />
+    <None Remove="minimizeButton_idle.png" />
+    <None Remove="muteButton_idle.png" />
+    <None Remove="nextButton_hover.png" />
+    <None Remove="nextButton_idle.png" />
+    <None Remove="pauseButton_hover.png" />
+    <None Remove="pauseButton_idle.png" />
+    <None Remove="playButton_hover.png" />
+    <None Remove="playButton_idle.png" />
+    <None Remove="playlistButton_hover.png" />
+    <None Remove="playlistButton_idle.png" />
+    <None Remove="prevButton_hover.png" />
+    <None Remove="prevButton_idle.png" />
+    <None Remove="randomoffButton.png" />
+    <None Remove="randomonButton.png" />
+    <None Remove="saveplaylistButton_idle.png" />
+    <None Remove="stopButton_hover.png" />
+    <None Remove="stopButton_idle.png" />
+    <None Remove="trackaddButton_hover.png" />
+    <None Remove="trackaddButton_idle.png" />
+    <None Remove="trackdeleteButton_hover.png" />
+    <None Remove="trackdeleteButton_idle.png" />
+    <None Remove="volumeoffButton_idle.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.1.0" />
+    <PackageReference Include="TagLibSharp" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="clearplaylistButton_idle.png" />
+    <Resource Include="closeButton_idle.png" />
+    <Resource Include="emptyCover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="loadplaylistButton_idle.png" />
+    <Resource Include="loopoffButton_idle.png" />
+    <Resource Include="minimizeButton_idle.png" />
+    <Resource Include="muteButton_idle.png" />
+    <Resource Include="nextButton_idle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="pauseButton_idle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="playButton_idle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="playlistButton_idle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="prevButton_idle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="randomoffButton.png" />
+    <Resource Include="saveplaylistButton_idle.png" />
+    <Resource Include="stopButton_idle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="trackaddButton_idle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="trackdeleteButton_idle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="volumeoffButton_idle.png" />
+  </ItemGroup>
+
+</Project>
