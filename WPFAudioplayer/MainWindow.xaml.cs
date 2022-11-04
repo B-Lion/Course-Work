@@ -364,7 +364,8 @@ namespace WPFAudioplayer
 
         private void loadplaylistButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (ofdpl.ShowDialog() == DialogResult)
+            bool? res = ofdpl.ShowDialog();
+            if (res == true)
             {
                 string[] strings = File.ReadAllLines(ofdpl.FileName);
                 foreach (string s in strings)
