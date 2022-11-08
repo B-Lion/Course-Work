@@ -175,19 +175,18 @@
             HorizontalAlignment="Left" 
             VerticalAlignment="Top">
             </Image>
-            <!--<Image
+            <!--Convert Button-->
+            <Image
             x:Name="convertButton"
-            Source="/trackaddButton_idle.png" 
+            Source="/convertButton_idle.png" 
             MouseDown="convertButton_MouseDown"
-            MouseEnter="trackaddButton_MouseEnter"
-            MouseLeave="trackaddButton_MouseLeave"
-            Width="16" 
-            Height="15" 
-            Canvas.Left="750" 
-            Canvas.Top="290" 
+            Width="20" 
+            Height="20" 
+            Canvas.Left="742" 
+            Canvas.Top="287" 
             HorizontalAlignment="Left" 
             VerticalAlignment="Top">
-            </Image>-->
+            </Image>
             <!--Track Add Button-->
             <Image
             x:Name="trackdeleteButton"

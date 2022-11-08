@@ -18,6 +18,7 @@
     <None Remove="clearplaylistButton_idle.png" />
     <None Remove="closeButton_hover.png" />
     <None Remove="closeButton_idle.png" />
+    <None Remove="convertButton_idle.png" />
     <None Remove="emptyCover.png" />
     <None Remove="loadplaylistButton_idle.png" />
     <None Remove="loopButton_hover.png" />
@@ -57,6 +58,7 @@
   <ItemGroup>
     <Resource Include="clearplaylistButton_idle.png" />
     <Resource Include="closeButton_idle.png" />
+    <Resource Include="convertButton_idle.png" />
     <Resource Include="emptyCover.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

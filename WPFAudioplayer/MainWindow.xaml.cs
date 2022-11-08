@@ -19,6 +19,8 @@ using TagLib.Riff;
 using File = System.IO.File;
 using System.Threading;
 using System.Drawing;
+using DataFormats = System.Windows.DataFormats;
+using DragDropEffects = System.Windows.DragDropEffects;
 
 namespace WPFAudioplayer
 {
@@ -56,6 +58,9 @@ namespace WPFAudioplayer
             timer.Interval = new TimeSpan(0, 0, 1);
             ofd.Filter = "Audio Files (*.wav;*.mp3)|*.wav;*.mp3;";
             ofdpl.Filter = "Text Files (*.txt)|*.txt";
+            playListBox.AllowDrop = true;
+            playListBox.DragOver += PlayListBox_DragOver;
+            playListBox.Drop += PlayListBox_Drop;
         }
 
         // Timer
@@ -113,7 +118,7 @@ namespace WPFAudioplayer
 
         private void playButton_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (audioFileReader != null && waveOut != null)
+            if (audioFileReader != null && waveOut != null && playListBox.Items.Count != 0)
             {
                 if (waveOut.PlaybackState == PlaybackState.Paused ||
                 waveOut.PlaybackState == PlaybackState.Stopped) waveOut.Play();
@@ -196,7 +201,7 @@ namespace WPFAudioplayer
 
         private void trackBar_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
-            if (audioFileReader != null && waveOut != null)
+            if (audioFileReader != null && waveOut != null && playListBox.Items.Count != 0)
             {
                 audioFileReader.Seek((long)(audioFileReader.WaveFormat.AverageBytesPerSecond * trackBar.Value), SeekOrigin.Begin);
             }
@@ -230,11 +235,13 @@ namespace WPFAudioplayer
 
         private void trackaddButton_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            ofd.ShowDialog();
-            for (int i = 0; i < ofd.FileNames.Length; i++)
+            if((bool)ofd.ShowDialog())
             {
-                musicFiles.Add(ofd.FileNames[i]);
-                musicFilesBindingList.Add(Path.GetFileNameWithoutExtension(ofd.FileNames[i]));
+                for (int i = 0; i < ofd.FileNames.Length; i++)
+                {
+                    musicFiles.Add(ofd.FileNames[i]);
+                    musicFilesBindingList.Add(Path.GetFileNameWithoutExtension(ofd.FileNames[i]));
+                }
             }
         } // Track Add Button
         private void trackaddButton_MouseEnter(object sender, MouseEventArgs e)
@@ -390,6 +397,9 @@ namespace WPFAudioplayer
             {
                 musicFiles.Clear();
                 musicFilesBindingList.Clear();
+                audioFileReader.Dispose();
+                audioFileReader.Close();
+                trackstartLabel.Content = trackendLabel.Content = "00:00";
             }
         } // Load Playlist Button
         private void clearplaylistButton_MouseEnter(object sender, MouseEventArgs e)
@@ -399,6 +409,21 @@ namespace WPFAudioplayer
         private void clearplaylistButton_MouseLeave(object sender, MouseEventArgs e)
         {
             clearplaylistButton.Source = new BitmapImage(new Uri($"{AppDomain.CurrentDomain.BaseDirectory}images/clearplaylistButton_idle.png"));
+        }
+
+        private void PlayListBox_Drop(object sender, System.Windows.DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            foreach (string file in files)
+            {
+                musicFiles.Add(file);
+                musicFilesBindingList.Add(Path.GetFileNameWithoutExtension(file));
+            }
+        }
+        private void PlayListBox_DragOver(object sender, System.Windows.DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effects = DragDropEffects.Copy;
         }
 
         // Load cover function
@@ -475,43 +500,58 @@ namespace WPFAudioplayer
                 volumeBar.Value = volumeBar.Maximum;
             }
         }
-
-        private void convertButton_MouseDown(object sender, MouseButtonEventArgs e)
+        private void volumeBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (audioFileReader != null)
+            if (playListBox.Items.Count != 0)
             {
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Filter = "WAV File (*.wav)|*.wav";
-                saveFileDialog.FileName = playListBox.SelectedItem.ToString();
-                saveFileDialog.ShowDialog();
-
-                string format = Path.GetExtension(musicFiles[playListBox.SelectedIndex]);
-
-                var reader = new Mp3FileReader(musicFiles[playListBox.SelectedIndex]);
-
-                new Thread(() =>
+                if (volumeBar.Value == volumeBar.Minimum)
                 {
-                    if (format == ".mp3")
-                    {
-                        WaveFileWriter.CreateWaveFile(saveFileDialog.FileName, reader);
-                    }
-                }).Start();
+                    volumeButton.Source = new BitmapImage(new Uri($"{AppDomain.CurrentDomain.BaseDirectory}images/volumeoffButton_idle.png"));
+                }
+                else
+                {
+                    volumeButton.Source = new BitmapImage(new Uri($"{AppDomain.CurrentDomain.BaseDirectory}images/muteButton_idle.png"));
+                }
+                if (waveOut != null)
+                {
+                    waveOut.Volume = (float)volumeBar.Value;
+                }
             }
         }
 
-        private void volumeBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        // Convertation
+
+        private void convertButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (volumeBar.Value == volumeBar.Minimum)
+            if (audioFileReader != null && playListBox.Items.Count != 0)
             {
-                volumeButton.Source = new BitmapImage(new Uri($"{AppDomain.CurrentDomain.BaseDirectory}images/volumeoffButton_idle.png"));
-            }
-            else
-            {
-                volumeButton.Source = new BitmapImage(new Uri($"{AppDomain.CurrentDomain.BaseDirectory}images/muteButton_idle.png"));
-            }
-            if (waveOut != null)
-            {
-                waveOut.Volume = (float)volumeBar.Value;
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+                string format = Path.GetExtension(musicFiles[playListBox.SelectedIndex]);
+
+                saveFileDialog.FileName = playListBox.SelectedItem.ToString();
+
+                if (format == ".mp3")
+                {
+                    saveFileDialog.Filter = "WAV File (*.wav)|*.wav";
+                }
+                else if (format == ".wav")
+                {
+                    saveFileDialog.Filter = "MP3 File (*.mp3)|*.mp3";
+                }
+
+                if ((bool)saveFileDialog.ShowDialog())
+                {
+                    if (format == ".mp3")
+                    {
+                        var mp3Reader = new Mp3FileReader(musicFiles[playListBox.SelectedIndex]);
+
+                        new Thread(() =>
+                        {
+                            WaveFileWriter.CreateWaveFile(saveFileDialog.FileName, mp3Reader);
+                        }).Start();
+                    }
+                }
             }
         }
     }
